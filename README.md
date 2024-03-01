@@ -3,6 +3,8 @@ Teammates: https://github.com/Qichen-Liu, https://github.com/zw3hk
 ### Project
 Music database web application employing MySQL for database management and integrated with Python Flask. Allows user authentication, searching for songs/users/playlists, rating/reviewing songs, adding/following users, and playlist creation. 
 
+[![Watch the video](https://img.youtube.com/vi/Tj_9Qs4PYPU/maxresdefault.jpg)](https://youtu.be/Tj_9Qs4PYPU)
+
 
 ### Prerequisites
 Ensure you have Python and pip installed. The following packages are required:
