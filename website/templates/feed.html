@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Feed{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+
+    <h3>Friend Requests</h3>
+    {% if friendrequests|length > 0 %}
+    <div class="my-table-container">
+        {% for request in friendrequests %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{request['user']}}">
+                            <button type="submit" class="btn-like-text">{{ request['user'] }}</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="my-table-buttons" margin-left:auto>
+                    <form method="POST" action="/feed">
+                        <input type="hidden" name="post_id" value="1">
+                        <input type="hidden" name="target_username" value="{{request['user']}}">
+                        <button type="submit" class="btn-my-primary-reverse" style="margin-left: 5px">Confirm</button>
+                    </form>
+                    <form method="POST" action="/feed">
+                        <input type="hidden" name="post_id" value="2">
+                        <input type="hidden" name="target_username" value="{{request['user']}}">
+                        <button type="submit" class="btn-my-primary-reverse" style="margin-left: 5px">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>No friend requests</p>
+    {% endif %}
+    
+    <br/>
+
+    <h3>New Songs</h3>
+    {% if newsongs|length > 0 %}
+    <div class="my-table-container">
+        {% for song in newsongs %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{song['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ song['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ song['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ song['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ song['genres'] }}</p></div>
+                        <div class="my-table-attributes">
+                            <div class="stars-container">
+                                <strong>Stars: </strong>
+                                {% set stars = song['stars'] or 0 %}
+                                {% for i in range(5) %}
+                                    <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>No songs</p>
+    {% endif %}
+    <br/>
+
+    <h3>New Ratings</h3>
+    {% if newratings|length > 0 %}
+    <div class="my-table-container">
+        {% for rating in newratings %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{rating['username']}}">
+                            <button type="submit" class="btn-like-text">{{ rating['username'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="stars-container" style="padding-right: 20px">
+                            <strong>Stars: </strong>
+                            {% set stars = rating['stars'] %}
+                            {% for i in range(5) %}
+                                <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                            {% endfor %}
+                        </div>
+                        <div class="my-table-attributes"><p><strong>Date: </strong>{{ rating['ratingDate']}}</p></div>
+                    </div>   
+                </div>
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{rating['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ rating['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ rating['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ rating['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ rating['genres'] }}</p></div>
+                    </div>   
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No Ratings</p>
+    {% endif %}
+    <br/>
+
+    <h3>New Reviews</h3>
+    {% if newreviews|length > 0 %}
+    <div class="my-table-container">
+        {% for review in newreviews %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{review['username']}}">
+                            <button type="submit" class="btn-like-text">{{ review['username'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Review: </strong>{{ review['reviewText']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Date: </strong>{{ review['reviewDate']}}</p></div>
+                    </div>   
+                </div>
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{review['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ review['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ review['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ review['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ review['genres'] }}</p></div>
+                    </div>   
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No Reviews</p>
+    {% endif %}
+
+    <br/>
+    <br/>
+{% endblock %}

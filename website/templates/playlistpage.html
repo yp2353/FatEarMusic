@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}PlayListPage{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+    <h2>{{playlist_name}}</h2>
+    <br/>
+    {% if playlist_description is defined %}
+    <p>{{ playlist_description }}</p>
+    <br/>
+    {% endif %}
+    <br/>
+    
+    {% if viewOnly is not defined %}
+        <form action="/playlistpage" method="POST">
+            <h3>Search Songs to Add</h3>
+            <div class="form-group">
+                <input
+                        type="title"
+                        class="form-control"
+                        id="title"
+                        name="title"
+                        placeholder="Enter song title"
+                />
+            </div>
+            <br/>
+            <input type="hidden" name="playlist_id" value="{{playlist_id}}">
+            <input type="hidden" name="post_id" value="1">
+            <div style="display: flex; justify-content: center;" class="button-container">
+                <button type="submit" class="btn-my-primary-outline">Search</button>
+            </div>
+        </form>
+
+        
+        <br/>
+        <br/>
+        {% if songs is defined %}
+        <h3>Here are the search results</h3>
+        <div class="songs-container">
+            {% for song in songs %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{song['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ song['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ song['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ song['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ song['genres'] }}</p></div>
+                        <div class="my-table-attributes">
+                            <div class="stars-container">
+                                <strong>Stars: </strong>
+                                {% set stars = song['stars'] or 0 %}
+                                {% for i in range(5) %}
+                                    <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <div class="my-table-buttons" margin-left:auto>
+                    <form action="/playlistpage" method="POST">
+                        <input type="hidden" name="playlist_id" value="{{playlist_id}}">
+                        <input type="hidden" name="song_id" value="{{ song['songID'] }}">
+                        <input type="hidden" name="post_id" value="2">
+                        <button type="submit" class="btn-my-primary-reverse">+</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <br/>
+        <br/>
+        {% endif %}
+
+        <h3>Songs</h3>
+        {% if song_in_playlist|length > 0 %}
+        <div class="songs-container">
+            {% for song in song_in_playlist %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{song['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ song['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ song['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ song['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ song['genres'] }}</p></div>
+                        <div class="my-table-attributes">
+                            <div class="stars-container">
+                                <strong>Stars: </strong>
+                                {% set stars = song['stars'] or 0 %}
+                                {% for i in range(5) %}
+                                    <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <div class="my-table-buttons" margin-left:auto>
+                    <form action="/playlistpage" method="POST">
+                        <input type="hidden" name="playlist_id" value="{{playlist_id}}">
+                        <input type="hidden" name="song_id" value="{{ song['songID'] }}">
+                        <input type="hidden" name="post_id" value="4">
+                        <button type="submit" class="btn-my-primary-reverse"><i class="fas fa-trash-alt"></i> </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No Songs in Playlist</p>
+        {% endif %}
+
+    {% else %}
+
+        <h3>Songs</h3>
+        {% if song_in_playlist|length > 0 %}
+        <div class="songs-container">
+            {% for song in song_in_playlist %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{song['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ song['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ song['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ song['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ song['genres'] }}</p></div>
+                        <div class="my-table-attributes">
+                            <div class="stars-container">
+                                <strong>Stars: </strong>
+                                {% set stars = song['stars'] or 0 %}
+                                {% for i in range(5) %}
+                                    <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No Songs in Playlist</p>
+        {% endif %}
+    
+    {% endif %}
+
+<br/>
+<br/>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}CreatePlaylist{% endblock %}
+{% block content %}
+
+<br/>
+<br/>
+
+<form method="POST">
+      <h3>Create Playlist</h3>
+      <div class="form-group">
+        <label for="playlistname">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="playlistname"
+          name="playlistname"
+          placeholder="Enter playlist name"
+          aria-describedby="playlistblock"
+        />
+        <small id="playlistblock" class="form-text text-muted">
+          1-50 characters long.
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="playlistdescription">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          id="playlistdescription"
+          name="playlistdescription"
+          placeholder="Enter brief playlist description"
+          aria-describedby="decrblock"
+        />
+        <small id="decrblock" class="form-text text-muted">
+          Less than 100 characters.
+        </small>
+      </div>
+      
+      <br />
+      <button type="submit" class="btn-my-primary-outline">Create</button>
+</form>
+
+<br/>
+<br/>
+
+
+{% endblock %}

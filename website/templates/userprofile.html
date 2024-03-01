@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}UserProfile{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+    <h2>{{ target_user_info['username'] }}</h2>
+    <br/>
+    <div class="addfollow-container">
+        <div>
+            <p><strong>Name: </strong>{{target_user_info['fname']}} {{target_user_info['lname']}}</p>
+            <p><strong>Nickname: </strong>{{target_user_info['nickname']}}</p>
+        </div>
+        <div class="addfollow-right">
+            {% if viewing is defined %}
+            <!--If logged in AND viewing someone else's profile-->
+            <div style="margin-left: 5px">
+                <!--Check if already added-->
+                {% if alrfriends is defined %}
+                    <button type="submit" class="btn-my-primary-outline" disabled>Added</button>
+                {% else %}
+                    {% if alrpending is defined %}
+                        <button type="submit" class="btn-my-primary-outline" disabled>Pending</button>
+                    {% else %}
+                        <form method="POST">
+                            <input type="hidden" name="post_id" value="2">
+                            <input type="hidden" name="target_username" value="{{ target_user_info['username'] }}">
+                            <button type="submit" class="btn-my-primary-outline">Add</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div style="margin-left: 5px">
+                <!--Check if already following-->
+                {% if alrfollow is defined %}
+                    <button type="submit" class="btn-my-primary-outline" disabled>Followed</button>
+                {% else %}
+                    <form method="POST">
+                        <input type="hidden" name="post_id" value="3">
+                        <input type="hidden" name="target_username" value="{{ target_user_info['username'] }}">
+                        <button type="submit" class="btn-my-primary-outline">Follow</button>
+                    </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <br/>
+    <br/>
+
+    <div class="fff_box">
+        <div class="fff_obj">
+            <form method="POST" action="/friendsfollowerfollowing">
+                <input type="hidden" name="post_id" value="1">
+                <input type="hidden" name="username" value="{{ target_user_info['username'] }}">
+                <button type="submit" class="btn-like-text-small">Friends: {{target_user_friend_count}}</button>
+            </form>
+        </div>
+        <div class="fff_obj">
+            <form method="POST" action="/friendsfollowerfollowing">
+                <input type="hidden" name="post_id" value="2">
+                <input type="hidden" name="username" value="{{ target_user_info['username'] }}">
+                <button type="submit" class="btn-like-text-small">Followers: {{target_user_follower_count}}</button>
+            </form>
+        </div>
+        <div class="fff_obj">
+            <form method="POST" action="/friendsfollowerfollowing">
+                <input type="hidden" name="post_id" value="3">
+                <input type="hidden" name="username" value="{{ target_user_info['username'] }}">
+                <button type="submit" class="btn-like-text-small">Following: {{target_user_following_count}}</button>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <br/>
+
+    <h3>Ratings</h3>
+        {% for rating in ratings %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/songpage">
+                            <input type="hidden" name="song_id" value="{{rating['songID']}}">
+                            <input type="hidden" name="post_id" value="1">
+                            <button type="submit" class="btn-like-text">{{ rating['title'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Artist: </strong> {{ rating['artists']}}</p></div>
+                        <div class="my-table-attributes"><p><strong>Album: </strong> {{ rating['albumIDs'] }}</p></div>
+                        <div class="my-table-attributes"><p><strong>Genre: </strong>{{ rating['genres'] }}</p></div>
+                    </div>   
+                </div>
+                <div class="my-table-info">
+                    <div class="stars-container">
+                        <strong>Stars: </strong>
+                        {% set stars = rating['stars'] %}
+                        {% for i in range(5) %}
+                            <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p><strong>Date: </strong>{{ rating['ratingDate']}}</p></div>
+                    </div>   
+                </div>
+            </div>
+        {% endfor %}
+    <br/>
+
+    <h3>Reviews</h3>
+    {% for review in reviews %}
+        <div class="my-table-box">
+            <div class="my-table-info">
+                <div class="my-table-info-title">
+                    <form method="POST" action="/songpage">
+                        <input type="hidden" name="song_id" value="{{review['songID']}}">
+                        <input type="hidden" name="post_id" value="1">
+                        <button type="submit" class="btn-like-text">{{ review['title'] }}</button>
+                    </form>
+                </div>
+                <div class="my-table-info-info">
+                    <div class="my-table-attributes"><p><strong>Artist: </strong> {{ review['artists']}}</p></div>
+                    <div class="my-table-attributes"><p><strong>Album: </strong> {{ review['albumIDs'] }}</p></div>
+                    <div class="my-table-attributes"><p><strong>Genre: </strong>{{ review['genres'] }}</p></div>
+                </div>   
+            </div>
+            <div class="my-table-info">
+                <div class="my-table-attributes" style="margin-bottom: -1em"><p><strong>Review: </strong>{{ review['reviewText']}}</p></div>
+                <div class="my-table-attributes" style="margin-bottom: -1em"><p><strong>Date: </strong>{{ review['reviewDate']}}</p></div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+    <br/>
+{% endblock %}

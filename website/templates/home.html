@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<br/>
+<br/>
+<h2>Discover new songs </h2>
+
+<br/>
+<br/>
+<!-- Search input form -->
+<p>I am looking for a song in </p>
+<form method="POST">
+    <div class="form-group">
+        <label for="genre">the genre...</label>
+        <input
+                type="genre"
+                class="form-control"
+                id="genre"
+                name="genre"
+                placeholder="(e.g. pop)"
+        />
+    </div>
+    <div class="form-group">
+        <label for="avgRating">with an average rating above...</label>
+        <input
+                type="text"
+                class="form-control"
+                id="avgRating"
+                name="avgRating"
+                placeholder="(e.g. 4.0)"
+        />
+    </div>
+    <div class="form-group">
+        <label for="artistName">performed by...</label>
+        <input
+                type="text"
+                class="form-control"
+                id="artistName"
+                name="artistName"
+                placeholder="(e.g. Imagine Dragons)"/>
+    </div>
+    </br>
+    <div style="display: flex; justify-content: center;" class="button-container">
+        <button type="submit" class="btn-my-primary-outline">Search</button>
+    </div>
+</form>
+
+
+{% if songs is defined %}
+    </br>
+    <h2>Search results</h2>
+
+    <!-- Three buttons to remove genre/rating/name from the search and redo search -->
+    <div class = "search_results_container">
+        {% if genre is defined %}
+        <div class = "search_results_container_box">
+            <form method="POST" action="/">
+                <input type="hidden" name="avgRating" value="{{avgRating}}">
+                <input type="hidden" name="artistName" value="{{artistName}}">
+                <button type="submit" class="btn-my-primary-reverse"><i class="fas fa-times"></i> <strong>Genre: </strong> {{genre}}</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if avgRating is defined %}
+        <div class = "search_results_container_box">
+            <form method="POST" action="/">
+                <input type="hidden" name="genre" value="{{genre}}">
+                <input type="hidden" name="artistName" value="{{artistName}}">
+                <button type="submit" class="btn-my-primary-reverse"><i class="fas fa-times"></i> <strong>Stars: </strong> {{avgRating}}</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if artistName is defined %}
+        <div class = "search_results_container_box">
+            <form method="POST" action="/">
+                <input type="hidden" name="genre" value="{{genre}}">
+                <input type="hidden" name="avgRating" value="{{avgRating}}">
+                <button type="submit" class="btn-my-primary-reverse"><i class="fas fa-times"></i> <strong>Artist: </strong> {{artistName}}</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    </br>
+
+    <!-- Display search results -->
+    <div class="songs-container">
+        {% for song in songs %}
+        <div class="my-table-box">
+            <div class="my-table-info">
+                <div class="my-table-info-title">
+                    <form method="POST" action="/songpage">
+                        <input type="hidden" name="song_id" value="{{song['songID']}}">
+                        <input type="hidden" name="post_id" value="1">
+                        <button type="submit" class="btn-like-text">{{ song['title'] }}</button>
+                    </form>
+                </div>
+                <div class="my-table-info-info">
+                    <div class="my-table-attributes"><p><strong>Artist: </strong> {{ song['artists']}}</p></div>
+                    <div class="my-table-attributes"><p><strong>Album: </strong> {{ song['albumIDs'] }}</p></div>
+                    <div class="my-table-attributes"><p><strong>Genre: </strong>{{ song['genres'] }}</p></div>
+                    <div class="my-table-attributes">
+                        <div class="stars-container">
+                            <strong>Stars: </strong>
+                            {% set stars = song['stars'] or 0 %}
+                            {% for i in range(5) %}
+                                <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<br/>
+<br/>
+
+{% endblock %}

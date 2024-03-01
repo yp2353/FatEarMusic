@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}SongPage{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+    <h2>{{ songs['title'] }}</h2>
+    <br/>
+    <p><strong>Artist: </strong>{{ songs['artists']}}</p>
+    <p><strong>Album: </strong>{{ songs['albumIDs'] }}</p>
+    <p><strong>Genre: </strong>{{ songs['genres'] }}</p>
+    <p><strong>Release Date: </strong>{{ songs['releaseDate'] }}</p>
+    <p><strong>URL: </strong>{{ songs['songURL'] }}</p>
+    <p><strong>ID: </strong>{{ songs['songID'] }}</p>
+    <div class="stars-container">
+        <strong>Stars: </strong>
+        {% set stars = songs['stars'] or 0 %}
+        {% for i in range(5) %}
+            <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+        {% endfor %}
+    </div>
+    <br/>
+    <br/>
+
+    <h3>Ratings</h3>
+    {% if ratings is defined %}
+        {% for rating in ratings %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{rating['username']}}">
+                            <button type="submit" class="btn-like-text">{{ rating['username'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p> {{ rating['ratingDate']}}</p></div>
+                    </div>   
+                </div>
+                <div class="my-table-info">
+                    <div class="stars-container">
+                        <strong>Stars: </strong>
+                        {% set stars = rating['stars'] %}
+                        {% for i in range(5) %}
+                            <span class="star{% if i < stars %} filled{% endif %}">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <p>No Ratings</p>
+    {% endif %}
+
+    <br/>
+
+    <h3>Reviews</h3>
+    {% if reviews is defined %}
+        {% for review in reviews %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{review['username']}}">
+                            <button type="submit" class="btn-like-text">{{ review['username'] }}</button>
+                        </form>
+                    </div>
+                    <div class="my-table-info-info">
+                        <div class="my-table-attributes"><p> {{ review['reviewDate']}}</p></div>
+                    </div>   
+                </div>
+                <div class="my-table-info">
+                    <div class="my-table-attributes"><p> {{ review['reviewText']}}</p></div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <p>No Reviews</p>
+    {% endif %}
+
+    <br/>
+
+    {% if user.is_authenticated %}
+        <form action="/songpage" method="POST">
+            <h3>Post Rating</h3>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Stars</label>
+                <select class="form-control" id="rating_stars" name="rating_stars">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+            </div>
+            <input type="hidden" name="song_id" value="{{ songs['songID'] }}">
+            <input type="hidden" name="post_id" value="2">
+            <div style="display: flex; justify-content: center;" class="button-container">
+                <button type="submit" class="btn-my-primary-outline">Submit</button>
+            </div>
+        </form>
+
+        <form action="/songpage" method="POST">
+            <h3>Post Review</h3>
+            <div class="form-group">
+                <textarea class="form-control" id="review_text" name="review_text" rows="2"></textarea>
+            </div>
+            <input type="hidden" name="song_id" value="{{ songs['songID'] }}">
+            <input type="hidden" name="post_id" value="3">
+            <div style="display: flex; justify-content: center;" class="button-container">
+                <button type="submit" class="btn-my-primary-outline">Submit</button>
+            </div>
+        </form>
+    {% endif %}
+
+
+    <br/>
+    <br/>
+{% endblock %}

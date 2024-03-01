@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}PlayList{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+    <div class="my-title-box">
+        <div class="my-title-name"><h2>Your PlayLists</h2></div>
+        <div class="my-title-button">
+            <form action="/createplaylist">
+                <input type="submit" class = "btn-my-primary-outline" value = "+"/>
+            </form>
+        </div>
+    </div>
+ 
+    <br/>
+
+    {% if playlists|length > 0 %}
+    <div class="my-table-container">
+        {% for playlist in playlists %}
+          <div class="my-table-box">
+            <div class="my-table-info">
+                <form method="POST" action="/playlistpage">
+                    <input type="hidden" name="post_id" value="3">
+                    <input type="hidden" name="playlist_id" value="{{playlist['listID']}}">
+                    <button type="submit" class="btn-like-text">{{ playlist['listName'] }}</button>
+                </form>
+                {% if playlist['playlistDescription'] is not none %}
+                  <p>{{ playlist['playlistDescription'] }}</p>
+                {% endif %}
+                <p style="color: gray;">{{ playlist['count'] }} songs</p>
+            </div>
+            
+            <div class="my-table-buttons" margin-left:auto>
+              
+              <form method="POST" action="/playlist">
+                <input type="hidden" name="playlist_id" value="{{playlist['listID']}}">
+                <button type="submit" class="btn-my-primary-reverse"><i class="fas fa-trash-alt"></i> </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No Playlists</p>
+    {% endif %}
+
+<br/>
+<br/>
+
+{% endblock %}

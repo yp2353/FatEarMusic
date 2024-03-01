@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Friends Follower Following{% endblock %}
+{% block content %}
+
+    <br/>
+    <br/>
+    
+    {% if friends is defined %}
+    <h2>Friends</h2>
+    <br/>
+    {% if friends|length > 0 %}
+        <div class="my-table-container">
+            {% for friend in friends %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{ friend['user'] }}">
+                            <button type="submit" class="btn-like-text">{{ friend['user'] }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No Friends</p>
+    {% endif %}
+    {% endif %}
+
+    {% if followers is defined %}
+    <h2>Followers</h2>
+    <br/>
+    {% if followers|length > 0 %}
+        <div class="my-table-container">
+            {% for follower in followers %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{ follower['follower'] }}">
+                            <button type="submit" class="btn-like-text">{{ follower['follower'] }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No Followers</p>
+    {% endif %}
+    {% endif %}
+
+    {% if following is defined %}
+    <h2>Following</h2>
+    <br/>
+    {% if following|length > 0 %}
+        <div class="my-table-container">
+            {% for follow in following %}
+            <div class="my-table-box">
+                <div class="my-table-info">
+                    <div class="my-table-info-title">
+                        <form method="POST" action="/userprofile">
+                            <input type="hidden" name="post_id" value="1">
+                            <input type="hidden" name="target_username" value="{{ follow['follows'] }}">
+                            <button type="submit" class="btn-like-text">{{ follow['follows'] }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No Following</p>
+    {% endif %}
+    {% endif %}
+
+    <br/>
+    <br/>
+{% endblock %}
